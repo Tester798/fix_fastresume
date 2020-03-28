@@ -36,12 +36,20 @@ func main() {
 			log.Fatal(err)
 		}
 
-		var save_path = dict["save_path"].(string)
+		if dict["save_path"] == nil {
+			fmt.Println("  No save_path found")
+			continue
+		}
+		save_path := dict["save_path"].(string)
 		fmt.Println("  save_path =", save_path)
 
 		re := regexp.MustCompile(`^.+(//.+)$`)
 		save_path_new := re.ReplaceAllString(save_path, `$1`)
 		save_path_new = strings.ReplaceAll(save_path_new, "/", "\\")
+
+		if save_path == save_path_new {
+			continue
+		}
 
 		fmt.Println("  changing to")
 		fmt.Println("  save_path =", save_path_new)
